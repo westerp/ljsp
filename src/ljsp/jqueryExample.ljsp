@@ -1,0 +1,7 @@
+#!ljsp
+(module
+  (import ($ "jquery")
+          (fibonacci "ljsp!./fnFibonacci"))
+  (. ($ "#out")
+     (append "Fibonacci of 11 is ")
+     (append (fibonacci 11))))

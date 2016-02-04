@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lisp test</title>
+    <script data-main="src/app" src="src/external/require.js"></script>
+</head>
+<body>
+<h1>Test of LJSP</h1>
+<h2>Choose page:</h2>
+<ul>
+    <li><a href="?main">Simple require of Ljsp-module used in RequireJs module</a> <a href="src/main.js">[ main.js start page ]</a> <a href="src/ljsp/fnFibonacci.ljsp">[ Imported fnFibonacci.ljsp ]</a></li>
+    <li><a href="?ljsp!ljsp/jqueryExample">Import Ljsp-module that imports Jquery-module and manipulates dom</a> <a href="src/ljsp/jqueryExample.ljsp">[ jqueryExample.ljsp start page ]</a></li>
+</ul>
+<p>All pages uses <a href="src/app.js">app.js</a> to setup RequireJS and choose main module</p>
+<h2>Result:</h2>
+<pre id="out">
+</pre>
+</body>
+</html>

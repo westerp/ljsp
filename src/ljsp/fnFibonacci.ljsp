@@ -1,0 +1,23 @@
+;; Without module wrapping everything will
+;; work as with a module with no imports (except core)
+(define = eq)
+
+(define sub1
+  (lambda (n)
+    (- n 1)))
+
+(define zero?
+  (lambda (n)
+    (= n 0)))
+
+(define fibonacci-aux
+  (lambda (n a b)
+    (if (= n 0)
+        a
+        (fibonacci-aux (- n 1) b (+ a b)))))
+
+(define fibonacci (lambda (n)
+  (fibonacci-aux n 0 1)))
+
+;; last value evaluated is sent back to require
+fibonacci
