@@ -10,6 +10,8 @@ define(['../types/LString',
     function (LString, LSymbol, LList, LComment, Cursor) {
         "use strict";
 
+        var IgnoreComments = true;
+
         var LParser = function (src) {
             this._strSrc    = src;
             this._bParsed   = false;
@@ -81,7 +83,11 @@ define(['../types/LString',
                 case ')':
                     throw "Invalid parentheses nesting at position: " + this._c.getSrcInjected(' <=== ERROR THERE ');
                 case ';':
-                    return this._parseComment();
+                    var objComment = this._parseComment();
+                    if( IgnoreComments ){
+                        return this._parse();
+                    }
+                    return objComment;
                 case '"':
                     return this._parseString();
                 case '(':
@@ -97,6 +103,7 @@ define(['../types/LString',
 
         LParser.prototype.parse = function () {
             var symModule = LSymbol('module');
+            var symImport = LSymbol('import');
             if (this._bParsed === false) {
                 this._c = new Cursor(this._strSrc);
                 // Support Racket style language header
@@ -108,16 +115,26 @@ define(['../types/LString',
 
                 try {
                     this._objParsed = this._parseList(false);
-                    if( ! this._objParsed instanceof LList || this._objParsed.length === 0){
+                    if( ! this._objParsed instanceof LList ){
                         var value = this._objParsed;
                         this._objParsed = new LList();
                         this._objParsed.push(symModule, value);
-                    } else if( this._objParsed.length === 1 &&
-                               this._objParsed[0] instanceof LList &&
-                               this._objParsed[0][0] === symModule  ){
-                        this._objParsed = this._objParsed[0];
                     } else {
-                        this._objParsed.unshift(symModule);
+                        var nStart =0;
+                        var arrComments = [];
+                        while(this._objParsed[nStart] instanceof LComment ){
+                            arrComments.push(this._objParsed[nStart++]);
+                        }
+                        if( this._objParsed.length === nStart + 1 &&
+                            this._objParsed[nStart] instanceof LList &&
+                            this._objParsed[nStart][0] === symModule  ){
+                                this._objParsed = this._objParsed[nStart];
+                                var nCommentIndex = (this._objParsed[1][0] === symImport ? 2 : 1);
+                                arrComments.unshift(nCommentIndex,0);
+                                this._objParsed.splice.apply(this._objParsed, arrComments);
+                        } else {
+                            this._objParsed.unshift(symModule);
+                        }
                     }
                     this._bParsed   = true;
                 } catch (e) {

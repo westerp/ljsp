@@ -1,5 +1,7 @@
-;; Without module wrapping everything will
-;; work as with a module with no imports (except core)
+;;;; A simple Ljsp file without any imports that exports a fibonacci function
+;;;;
+;;;; @created by westerp on 2016-02-03
+;;;; @copyright GPL
 (define = eq)
 
 (define sub1

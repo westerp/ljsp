@@ -1,7 +1,18 @@
 #!ljsp
+;;;; A main file created in Ljsp that demonstrates using RequireJS-plugins from Jjsp
+;;;;
+;;;; @created by westerp on 2016-02-03
+;;;; @copyright GPL
+
+;; A module is the way to make a RequireJS module
 (module
+  ;; import takes the variable name and a path
   (import ($ "jquery")
           (fibonacci "ljsp!./fnFibonacci"))
+
+  ;; dot is a special form that access members. eg
+  ;; (. a b c) becomes a.b.c and the code below becomes
+  ;; ($ "#out").append("Fibonacci of 11 is ").append(fibonacci(11))
   (. ($ "#out")
      (append "Fibonacci of 11 is ")
      (append (fibonacci 11))))

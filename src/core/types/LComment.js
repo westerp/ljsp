@@ -7,11 +7,11 @@ define(function(){
     "use strict";
 
     var LComment = function (str){
-        this._str = str;
+            this._str = str;
     };
 
     LComment.prototype.toString = function() {
-        return '//' + this._str  + '\n';
+        return '//' + this._str;
     };
 
     return LComment;
